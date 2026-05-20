@@ -1,3 +1,3 @@
 # ProyectoAnalisis
-Sarah Cazorla Vega
-Alvaro Leonel Nina Vargas
+1. Sarah Cazorla Vega      
+2. Alvaro Leonel Nina Vargas
