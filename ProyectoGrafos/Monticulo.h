@@ -2,7 +2,7 @@
 #include "Nodo.h"
 #include "Lista.h"
 #include <vector>
-#define MAX 32000
+#define MAX 2000000
 template <class T>
 class Monticulo
 {

@@ -1,18 +1,23 @@
 #include "Grafo.h"
 
-
-
 int main() {
-
     Grafo g(886790, true);
 
     g.cargarCSV("edges.csv");
 
-    cout << "Carga completa\n";
+    cout << "Carga completa" << endl;
+    cout << "Total aristas: " << g.Contar() << endl;
 
-    cout << g.Contar() << endl;
-    int grafos_Alcanzables = g.AlcanceVehicular(0);
-    cout << "Numero de grafos alcanzables en el rango de 5000 km: " << grafos_Alcanzables << endl;
+    // Alcance Vehicular
+    int alcanzables = g.AlcanceVehicular(0);
+    cout << "Nodos alcanzables en 5km desde nodo 0: "
+        << alcanzables << endl;
+
+    // Islas Viales
     g.ComponentesConexas();
+
+    // Diametro Vial
+    g.DiametroVial();
+
     return 0;
 }
