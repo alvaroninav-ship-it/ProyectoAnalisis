@@ -74,34 +74,37 @@ inline bool Monticulo<T>::eliminar(T& mayor)
 template<class T>
 inline void Monticulo<T>::ReordenarAbajo(int pos)
 {
-	if (vec[pos].getExiste()) {
-		Nodo<T> der = vec[pos * 2 + 1];
-		Nodo<T> izq = vec[pos * 2];
-		if (izq.getExiste() && der.getExiste() == false) {
-			if(izq.getDato() > vec[pos].getDato())
-			{
-				T aux = vec[pos].getDato();
-				vec[pos].setDato(izq.getDato());
-				vec[pos * 2].setDato(aux);
-				ReordenarAbajo(pos * 2);
-			}
-		}
-		else {
-			if(der.getDato()> vec[pos].getDato() && der.getExiste())
-			{
-				T aux = vec[pos].getDato();
-				vec[pos].setDato(der.getDato());
-				vec[pos * 2 + 1].setDato(aux);
-				ReordenarAbajo(pos * 2 + 1);
-			}
-		    if(izq.getDato()> vec[pos].getDato() && izq.getExiste())
-			{
-					T aux = vec[pos].getDato();
-					vec[pos].setDato(izq.getDato());
-					vec[pos * 2].setDato(aux);
-					ReordenarAbajo(pos * 2);
-			}
-		}
+	int izq = pos * 2;
+
+	int der = pos * 2 + 1;
+
+	int menor = pos;
+
+	if (vec[izq].getExiste() &&
+		vec[izq].getDato() <
+		vec[menor].getDato()) {
+
+		menor = izq;
+	}
+
+	if (vec[der].getExiste() &&
+		vec[der].getDato() <
+		vec[menor].getDato()) {
+
+		menor = der;
+	}
+
+	if (menor != pos) {
+
+		T aux = vec[pos].getDato();
+
+		vec[pos].setDato(
+			vec[menor].getDato()
+		);
+
+		vec[menor].setDato(aux);
+
+		ReordenarAbajo(menor);
 	}
 }
 
@@ -150,7 +153,7 @@ inline void Monticulo<T>::ReordenarArriba(int pos)
 	int padre = pos / 2;
 	if(vec[padre].getExiste())
 	{
-		if(vec[pos].getDato()> vec[padre].getDato())
+		if(vec[pos].getDato()< vec[padre].getDato())
 		{
 			T aux = vec[pos].getDato();
 			vec[pos].setDato(vec[padre].getDato());

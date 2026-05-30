@@ -1,8 +1,5 @@
 #include "Grafo.h"
 
-void Alcanze_Vehicular(Grafo& const ) {
-
-}
 
 
 int main() {
@@ -13,7 +10,9 @@ int main() {
 
     cout << "Carga completa\n";
 
-    cout << g.getAdjList()[0].size();
-    g.printGraph();
+    cout << g.Contar() << endl;
+    int grafos_Alcanzables = g.AlcanceVehicular(0);
+    cout << "Numero de grafos alcanzables en el rango de 5000 km: " << grafos_Alcanzables << endl;
+    g.ComponentesConexas();
     return 0;
 }

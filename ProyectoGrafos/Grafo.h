@@ -60,21 +60,29 @@ public:
             cout << endl;
         }
     }
+    int Contar() {
+        int cont = 0;
+        for (int i = 0; i < vertices; i++) {
+            for (auto& e : adjList[i]) {
+                cont++;
+            }
+        }
+        return cont;
+    }
 
     // =====================================
     // BFS
     // =====================================
-    vector<int> BFS(int start) {
-
-        vector<int> visited(vertices, 0);
-
-        vector<int> order;
+    int BFS(int start,
+        vector<bool>& visited) {
 
         queue<int> q;
 
-        visited[start] = 1;
-
         q.push(start);
+
+        visited[start] = true;
+
+        int tamano = 0;
 
         while (!q.empty()) {
 
@@ -82,57 +90,92 @@ public:
 
             q.pop();
 
-            order.push_back(current);
+            tamano++;
 
-            for (auto& neighbor : adjList[current]) {
+            for (auto& neighbor :
+                adjList[current]) {
 
-                int next = neighbor.getDestination();
+                int next =
+                    neighbor.getDestination();
 
                 if (!visited[next]) {
 
-                    visited[next] = 1;
+                    visited[next] = true;
 
                     q.push(next);
                 }
             }
         }
 
-        return order;
+        return tamano;
+    }
+    // =====================================
+    // ISLAS VIALES
+    // =====================================
+
+
+
+    void ComponentesConexas() {
+
+        vector<bool> visited(vertices, false);
+
+        int totalComponentes = 0;
+
+        int componenteMayor = 0;
+
+        for (int i = 0; i < vertices; i++) {
+
+            if (!visited[i]) {
+
+                int tamano =
+                    BFS(i, visited);
+
+                totalComponentes++;
+
+
+                if (tamano > componenteMayor) {
+
+                    componenteMayor = tamano;
+                }
+            }
+        }
+
+        cout << "Total de islas: " << endl;
+        cout<< totalComponentes<< endl;
+
+        cout << "Componente principal: "
+            << componenteMayor
+            << " nodos"<<endl;
     }
 
     // =====================================
     // DIJKSTRA
     // =====================================
+   
     vector<double> dijkstra(int start) {
 
-        // Distancias
         vector<double> dist(vertices, 999999999);
 
-        // Min Heap
-        priority_queue<
-            pair<double, int>,
-            vector<pair<double, int>>,
-            greater<pair<double, int>>
-        > cola;
-
-        // Nodo inicial
+        Monticulo<pair<double, int>> heap;
         dist[start] = 0;
 
-        cola.push({ 0, start });
+        heap.insertar({ 0, start });
 
-        while (!cola.empty()) {
+        while (true) {
 
-            // Sacar nodo más cercano
+            pair<double, int> actual;
+
+            if (!heap.eliminar(actual))
+                break;
+
             double distanciaActual =
-                cola.top().first;
+                actual.first;
 
             int nodoActual =
-                cola.top().second;
+                actual.second;
 
-            cola.pop();
-
-            // Recorrer vecinos
-            for (auto& vecino : adjList[nodoActual]) {
+            for (auto& vecino :
+                adjList[nodoActual]) {
 
                 int siguiente =
                     vecino.getDestination();
@@ -143,13 +186,13 @@ public:
                 double nuevaDistancia =
                     distanciaActual + peso;
 
-                // Si mejora
-                if (nuevaDistancia < dist[siguiente]) {
+                if (nuevaDistancia <
+                    dist[siguiente]) {
 
                     dist[siguiente] =
                         nuevaDistancia;
 
-                    cola.push({
+                    heap.insertar({
                         nuevaDistancia,
                         siguiente
                         });
@@ -239,7 +282,7 @@ public:
 
         file.close();
 
-        cout << "Grafo cargado correctamente\n";
+        cout << "Grafo cargado correctamente"<<endl;
     }
 
     // =====================================
